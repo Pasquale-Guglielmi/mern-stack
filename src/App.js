@@ -1,21 +1,3 @@
-var bugs = [
-    {
-        id: 1,
-        priority: 'P1',
-        status: 'Open',
-        owner: 'Andy',
-        title:'App crashes on refresh'
-    },
-    {
-        id: 2,
-        priority: 'P1',
-        status: 'New',
-        owner: 'John',
-        title: 'Misaligned border on panel'
-    }];
-
-
-
 class BugRow extends React.Component {
     render() {
         return (
@@ -141,8 +123,19 @@ class BugList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            bugs: bugs
+            bugs: []
         }
+    }
+
+    componentDidMount() {
+        $.ajax('http://localhost:3000/api/bugs').done(function(data) {
+            this.setState(function() {
+                console.log(data);
+                return {
+                    bugs: data
+                }
+            })
+        }.bind(this));
     }
 
     addBug(bugObj) {
