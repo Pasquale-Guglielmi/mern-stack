@@ -49,7 +49,6 @@ class BugAdd extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: null,
             priority: '',
             status: '',
             owner: '',
@@ -62,7 +61,6 @@ class BugAdd extends React.Component {
         this.props.handleSubmit(this.state);
         this.setState(function() {
             return {
-                id: null,
                 priority: '',
                 status: '',
                 owner: '',
@@ -74,7 +72,6 @@ class BugAdd extends React.Component {
     handleChange(event) {
         var value = event.target.value;
         var identifier = event.target.placeholder;
-        console.log(identifier);
         var newState = {};
         newState[identifier] = value;
         this.setState(function() {
@@ -130,7 +127,6 @@ class BugList extends React.Component {
     componentDidMount() {
         $.ajax('http://localhost:3000/api/bugs').done(function(data) {
             this.setState(function() {
-                console.log(data);
                 return {
                     bugs: data
                 }
@@ -139,16 +135,22 @@ class BugList extends React.Component {
     }
 
     addBug(bugObj) {
-        console.log("Adding New Bug")
-        var currentBugs = this.state.bugs;
+        console.log("Adding New Bug");
 
-        bugObj.id = currentBugs.length + 1;
-        currentBugs.push(bugObj);
-        this.setState(function() {
-            return {
-                bugs: currentBugs
-            };
-        })
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:3000/api/bugs",
+            data: JSON.stringify(bugObj),
+            contentType: "application/json"
+        }).done(function(data) {
+                this.setState(() => {
+                    var currentState =  this.state.bugs;
+                    currentState.push(data);
+                    return currentState;
+                })
+            }.bind(this)).fail(function( jqXHR, textStatus, error ) {
+              alert( "Request failed because: " + error );
+            }.bind(this));
     }
 
     render() {
