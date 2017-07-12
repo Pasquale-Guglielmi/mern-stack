@@ -19,7 +19,7 @@ class BugRow extends React.Component {
 class BugFilter extends React.Component {
     render() {
         return (
-            <div>Filter section</div>
+            <div>Filter Section</div>
         )
     }
 }

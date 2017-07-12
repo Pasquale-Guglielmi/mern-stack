@@ -31462,7 +31462,7 @@ class BugFilter extends React.Component {
         return React.createElement(
             'div',
             null,
-            'Filter section'
+            'Filter Section'
         );
     }
 }
