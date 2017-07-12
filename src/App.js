@@ -1,3 +1,7 @@
+var React = require('react');
+var ReactDOM = require('react-dom');
+var $ = require('jquery');
+
 class BugRow extends React.Component {
     render() {
         return (
@@ -36,7 +40,7 @@ class BugTable extends React.Component {
                 <tbody>
                     {this.props.bugs.map((bug) => {
                         return (
-                            <BugRow bug={bug} />
+                            <BugRow bug={bug} key={bug._id}/>
                         )
                     })}
                 </tbody>

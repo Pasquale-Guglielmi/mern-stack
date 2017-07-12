@@ -1,11 +1,11 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+var MongoClient = require('mongodb').MongoClient;
 
 app.use(express.static('static'));
 app.use(bodyParser.json());
 
-var MongoClient = require('mongodb').MongoClient;
 var db;
 
 app.get('/api/bugs', function(req, res) {
