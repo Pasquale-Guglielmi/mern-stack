@@ -13,7 +13,6 @@ app.get('/api/bugs', function(req, res) {
     (req.query.priority) && (filter.priority = req.query.priority);
     (req.query.status) && (filter.status = req.query.status);
     db.collection("bugs").find(filter).toArray(function(err, docs) {
-        console.log(docs);
         res.json(docs);
     })
 });

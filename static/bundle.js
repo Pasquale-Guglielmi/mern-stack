@@ -31463,43 +31463,35 @@ class BugAdd extends React.Component {
     }
 
     render() {
-        return React.createElement(
-            'form',
-            { onSubmit: this.onSubmit.bind(this) },
-            React.createElement('input', {
-                placeholder: 'priority',
-                type: 'text',
-                autoComplete: 'off',
-                value: this.state.priority,
-                onChange: this.handleChange.bind(this)
-            }),
-            React.createElement('input', {
-                placeholder: 'status',
-                type: 'text',
-                autoComplete: 'off',
-                value: this.state.status,
-                onChange: this.handleChange.bind(this)
-            }),
-            React.createElement('input', {
-                placeholder: 'owner',
-                type: 'text',
-                autoComplete: 'off',
-                value: this.state.owner,
-                onChange: this.handleChange.bind(this)
-            }),
-            React.createElement('input', {
-                placeholder: 'title',
-                type: 'text',
-                autoComplete: 'off',
-                value: this.state.title,
-                onChange: this.handleChange.bind(this)
-            }),
-            React.createElement(
-                'button',
-                { type: 'submit' },
-                'Add Bug'
-            )
-        );
+        return React.createElement('form', { onSubmit: this.onSubmit.bind(this) }, React.createElement('input', {
+            placeholder: 'priority',
+            type: 'text',
+            autoComplete: 'off',
+            value: this.state.priority,
+            onChange: this.handleChange.bind(this),
+            required: true
+        }), React.createElement('input', {
+            placeholder: 'status',
+            type: 'text',
+            autoComplete: 'off',
+            value: this.state.status,
+            onChange: this.handleChange.bind(this),
+            required: true
+        }), React.createElement('input', {
+            placeholder: 'owner',
+            type: 'text',
+            autoComplete: 'off',
+            value: this.state.owner,
+            onChange: this.handleChange.bind(this),
+            required: true
+        }), React.createElement('input', {
+            placeholder: 'title',
+            type: 'text',
+            autoComplete: 'off',
+            value: this.state.title,
+            onChange: this.handleChange.bind(this),
+            required: true
+        }), React.createElement('button', { type: 'submit' }, 'Add Bug'));
     }
 }
 
@@ -31509,17 +31501,39 @@ module.exports = BugAdd;
 var React = require('react');
 
 class BugFilter extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            priority: '',
+            status: ''
+        };
+    }
+
+    handleChange(event) {
+        var value = event.target.value;
+        var identifier = event.target.name;
+        var newState = {};
+        newState[identifier] = value;
+        this.setState(function () {
+            return newState;
+        });
+    }
+
     onSubmit(event) {
         event.preventDefault();
-        var filter = {
-            priority: "P2",
-            status: "New"
-        };
-        this.props.handleSubmit(filter);
+        this.props.handleSubmit(this.state);
     }
 
     render() {
-        return React.createElement("div", null, React.createElement("form", { onSubmit: this.onSubmit.bind(this) }, React.createElement("button", { type: "submit" }, "Filter")));
+        return React.createElement('div', null, React.createElement('form', { onSubmit: this.onSubmit.bind(this) }, React.createElement('label', { htmlFor: 'priority' }, 'Priority'), React.createElement('select', {
+            name: 'priority',
+            id: 'priority',
+            value: this.state.priority,
+            onChange: this.handleChange.bind(this) }, React.createElement('option', { value: '' }, 'All'), React.createElement('option', { value: 'P1' }, 'P1'), React.createElement('option', { value: 'P2' }, 'P2')), React.createElement('br', null), React.createElement('label', { htmlFor: 'status' }, 'Status'), React.createElement('select', {
+            name: 'status',
+            id: 'status',
+            value: this.state.status,
+            onChange: this.handleChange.bind(this) }, React.createElement('option', { value: '' }, 'All'), React.createElement('option', { value: 'New' }, 'New'), React.createElement('option', { value: 'Open' }, 'Open'), React.createElement('option', { value: 'Closed' }, 'Closed')), React.createElement('br', null), React.createElement('button', { type: 'submit' }, 'Filter')));
     }
 }
 
@@ -31533,15 +31547,84 @@ var BugAdd = require('./BugAdd');
 
 class BugRow extends React.Component {
     render() {
-        return React.createElement('tr', null, React.createElement('td', null, this.props.bug._id), React.createElement('td', null, this.props.bug.priority), React.createElement('td', null, this.props.bug.status), React.createElement('td', null, this.props.bug.owner), React.createElement('td', null, this.props.bug.title));
+        return React.createElement(
+            'tr',
+            null,
+            React.createElement(
+                'td',
+                null,
+                this.props.bug._id
+            ),
+            React.createElement(
+                'td',
+                null,
+                this.props.bug.priority
+            ),
+            React.createElement(
+                'td',
+                null,
+                this.props.bug.status
+            ),
+            React.createElement(
+                'td',
+                null,
+                this.props.bug.owner
+            ),
+            React.createElement(
+                'td',
+                null,
+                this.props.bug.title
+            )
+        );
     }
 }
 
 class BugTable extends React.Component {
     render() {
-        return React.createElement('table', null, React.createElement('thead', null, React.createElement('tr', null, React.createElement('th', null, 'Id'), React.createElement('th', null, 'Priority'), React.createElement('th', null, 'Status'), React.createElement('th', null, 'Owner'), React.createElement('th', null, 'Title'))), React.createElement('tbody', null, this.props.bugs.map(bug => {
-            return React.createElement(BugRow, { bug: bug, key: bug._id });
-        })));
+        return React.createElement(
+            'table',
+            null,
+            React.createElement(
+                'thead',
+                null,
+                React.createElement(
+                    'tr',
+                    null,
+                    React.createElement(
+                        'th',
+                        null,
+                        'Id'
+                    ),
+                    React.createElement(
+                        'th',
+                        null,
+                        'Priority'
+                    ),
+                    React.createElement(
+                        'th',
+                        null,
+                        'Status'
+                    ),
+                    React.createElement(
+                        'th',
+                        null,
+                        'Owner'
+                    ),
+                    React.createElement(
+                        'th',
+                        null,
+                        'Title'
+                    )
+                )
+            ),
+            React.createElement(
+                'tbody',
+                null,
+                this.props.bugs.map(bug => {
+                    return React.createElement(BugRow, { bug: bug, key: bug._id });
+                })
+            )
+        );
     }
 }
 
@@ -31587,12 +31670,23 @@ class BugList extends React.Component {
                 return currentState;
             });
         }.bind(this)).fail(function (jqXHR, textStatus, error) {
-            alert("Request failed because: " + error);
+            alert("Request failed because: " + textStatus + error);
         }.bind(this));
     }
 
     render() {
-        return React.createElement('div', null, React.createElement('h1', null, 'Bug Tracker'), React.createElement(BugFilter, { handleSubmit: this.handleFilter.bind(this) }), React.createElement(BugTable, { bugs: this.state.bugs }), React.createElement(BugAdd, { handleSubmit: this.addBug.bind(this) }));
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(
+                'h1',
+                null,
+                'Bug Tracker'
+            ),
+            React.createElement(BugFilter, { handleSubmit: this.handleFilter.bind(this) }),
+            React.createElement(BugTable, { bugs: this.state.bugs }),
+            React.createElement(BugAdd, { handleSubmit: this.addBug.bind(this) })
+        );
     }
 }
 

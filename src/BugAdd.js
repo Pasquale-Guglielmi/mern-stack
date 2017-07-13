@@ -43,6 +43,7 @@ class BugAdd extends React.Component {
                     autoComplete='off'
                     value={this.state.priority}
                     onChange={this.handleChange.bind(this)}
+                    required
                 />
                 <input
                     placeholder='status'
@@ -50,6 +51,7 @@ class BugAdd extends React.Component {
                     autoComplete='off'
                     value={this.state.status}
                     onChange={this.handleChange.bind(this)}
+                    required
                 />
                 <input
                     placeholder='owner'
@@ -57,6 +59,7 @@ class BugAdd extends React.Component {
                     autoComplete='off'
                     value={this.state.owner}
                     onChange={this.handleChange.bind(this)}
+                    required
                 />
                 <input
                     placeholder='title'
@@ -64,6 +67,7 @@ class BugAdd extends React.Component {
                     autoComplete='off'
                     value={this.state.title}
                     onChange={this.handleChange.bind(this)}
+                    required
                 />
                 <button type="submit">Add Bug</button>
             </form>

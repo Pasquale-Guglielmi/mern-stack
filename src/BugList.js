@@ -85,7 +85,7 @@ class BugList extends React.Component {
                     return currentState;
                 })
             }.bind(this)).fail(function( jqXHR, textStatus, error ) {
-              alert( "Request failed because: " + error );
+              alert( "Request failed because: " + textStatus + error );
             }.bind(this));
     }
 
