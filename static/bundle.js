@@ -31561,26 +31561,9 @@ class BugList extends React.Component {
         this.loadData(obj);
     }
 
-    buildUrl(filterObj, urlString) {
-        var url = urlString;
-        var parameters = [];
-        var queryString = '';
-        for (var key in filterObj) {
-            if (filterObj.hasOwnProperty(key)) {
-                parameters.push(encodeURIComponent(key) + '=' + encodeURIComponent(filterObj[key]));
-            }
-        }
-        if (parameters.length) {
-            queryString = parameters.join('&');
-            url = url + '?' + queryString;
-        };
-        return url;
-    }
-
     loadData(filter) {
-        var apiUrl = 'http://localhost:3000/api/bugs';
-        var url = this.buildUrl(filter, apiUrl);
-        $.ajax(url).done(function (data) {
+        var url = 'http://localhost:3000/api/bugs';
+        $.ajax(url, { data: filter }).done(function (data) {
             this.setState(function () {
                 return {
                     bugs: data
