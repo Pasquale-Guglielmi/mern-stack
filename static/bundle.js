@@ -31509,12 +31509,17 @@ module.exports = BugAdd;
 var React = require('react');
 
 class BugFilter extends React.Component {
+    onSubmit(event) {
+        event.preventDefault();
+        var filter = {
+            priority: "P2",
+            status: "New"
+        };
+        this.props.handleSubmit(filter);
+    }
+
     render() {
-        return React.createElement(
-            'div',
-            null,
-            'Filter Section'
-        );
+        return React.createElement("div", null, React.createElement("form", { onSubmit: this.onSubmit.bind(this) }, React.createElement("button", { type: "submit" }, "Filter")));
     }
 }
 
@@ -31528,84 +31533,15 @@ var BugAdd = require('./BugAdd');
 
 class BugRow extends React.Component {
     render() {
-        return React.createElement(
-            'tr',
-            null,
-            React.createElement(
-                'td',
-                null,
-                this.props.bug._id
-            ),
-            React.createElement(
-                'td',
-                null,
-                this.props.bug.priority
-            ),
-            React.createElement(
-                'td',
-                null,
-                this.props.bug.status
-            ),
-            React.createElement(
-                'td',
-                null,
-                this.props.bug.owner
-            ),
-            React.createElement(
-                'td',
-                null,
-                this.props.bug.title
-            )
-        );
+        return React.createElement('tr', null, React.createElement('td', null, this.props.bug._id), React.createElement('td', null, this.props.bug.priority), React.createElement('td', null, this.props.bug.status), React.createElement('td', null, this.props.bug.owner), React.createElement('td', null, this.props.bug.title));
     }
 }
 
 class BugTable extends React.Component {
     render() {
-        return React.createElement(
-            'table',
-            null,
-            React.createElement(
-                'thead',
-                null,
-                React.createElement(
-                    'tr',
-                    null,
-                    React.createElement(
-                        'th',
-                        null,
-                        'Id'
-                    ),
-                    React.createElement(
-                        'th',
-                        null,
-                        'Priority'
-                    ),
-                    React.createElement(
-                        'th',
-                        null,
-                        'Status'
-                    ),
-                    React.createElement(
-                        'th',
-                        null,
-                        'Owner'
-                    ),
-                    React.createElement(
-                        'th',
-                        null,
-                        'Title'
-                    )
-                )
-            ),
-            React.createElement(
-                'tbody',
-                null,
-                this.props.bugs.map(bug => {
-                    return React.createElement(BugRow, { bug: bug, key: bug._id });
-                })
-            )
-        );
+        return React.createElement('table', null, React.createElement('thead', null, React.createElement('tr', null, React.createElement('th', null, 'Id'), React.createElement('th', null, 'Priority'), React.createElement('th', null, 'Status'), React.createElement('th', null, 'Owner'), React.createElement('th', null, 'Title'))), React.createElement('tbody', null, this.props.bugs.map(bug => {
+            return React.createElement(BugRow, { bug: bug, key: bug._id });
+        })));
     }
 }
 
@@ -31618,7 +31554,33 @@ class BugList extends React.Component {
     }
 
     componentDidMount() {
-        $.ajax('http://localhost:3000/api/bugs').done(function (data) {
+        this.loadData({});
+    }
+
+    handleFilter(obj) {
+        this.loadData(obj);
+    }
+
+    buildUrl(filterObj, urlString) {
+        var url = urlString;
+        var parameters = [];
+        var queryString = '';
+        for (var key in filterObj) {
+            if (filterObj.hasOwnProperty(key)) {
+                parameters.push(encodeURIComponent(key) + '=' + encodeURIComponent(filterObj[key]));
+            }
+        }
+        if (parameters.length) {
+            queryString = parameters.join('&');
+            url = url + '?' + queryString;
+        };
+        return url;
+    }
+
+    loadData(filter) {
+        var apiUrl = 'http://localhost:3000/api/bugs';
+        var url = this.buildUrl(filter, apiUrl);
+        $.ajax(url).done(function (data) {
             this.setState(function () {
                 return {
                     bugs: data
@@ -31647,18 +31609,7 @@ class BugList extends React.Component {
     }
 
     render() {
-        return React.createElement(
-            'div',
-            null,
-            React.createElement(
-                'h1',
-                null,
-                'Bug Tracker'
-            ),
-            React.createElement(BugFilter, null),
-            React.createElement(BugTable, { bugs: this.state.bugs }),
-            React.createElement(BugAdd, { handleSubmit: this.addBug.bind(this) })
-        );
+        return React.createElement('div', null, React.createElement('h1', null, 'Bug Tracker'), React.createElement(BugFilter, { handleSubmit: this.handleFilter.bind(this) }), React.createElement(BugTable, { bugs: this.state.bugs }), React.createElement(BugAdd, { handleSubmit: this.addBug.bind(this) }));
     }
 }
 

@@ -52,7 +52,33 @@ class BugList extends React.Component {
     }
 
     componentDidMount() {
-        $.ajax('http://localhost:3000/api/bugs').done(function(data) {
+        this.loadData({});
+    }
+
+    handleFilter(obj) {
+        this.loadData(obj);
+    }
+
+    buildUrl(filterObj, urlString) {
+        var url = urlString;
+        var parameters = [];
+        var queryString = '';
+        for (var key in filterObj) {
+            if (filterObj.hasOwnProperty(key)) {
+                parameters.push(encodeURIComponent(key) + '=' + encodeURIComponent(filterObj[key]));
+            }
+        }
+        if (parameters.length) {
+            queryString = parameters.join('&');
+            url = url + '?' + queryString;
+        };
+        return url;
+    }
+
+    loadData(filter) {
+        var apiUrl = 'http://localhost:3000/api/bugs';
+        var url = this.buildUrl(filter, apiUrl);
+        $.ajax(url).done(function(data) {
             this.setState(function() {
                 return {
                     bugs: data
@@ -84,9 +110,9 @@ class BugList extends React.Component {
         return (
             <div>
                 <h1>Bug Tracker</h1>
-                <BugFilter />
+                <BugFilter handleSubmit={this.handleFilter.bind(this)}/>
                 <BugTable bugs={this.state.bugs}/>
-                <BugAdd handleSubmit={this.addBug.bind(this)} />
+                <BugAdd handleSubmit={this.addBug.bind(this)}/>
             </div>
         )
     }
