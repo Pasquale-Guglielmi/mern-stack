@@ -31421,100 +31421,12 @@ module.exports = require('./lib/React');
 },{"./lib/React":161}],185:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
-var $ = require('jquery');
+var BugList = require('./BugList');
 
-class BugRow extends React.Component {
-    render() {
-        return React.createElement(
-            'tr',
-            null,
-            React.createElement(
-                'td',
-                null,
-                this.props.bug._id
-            ),
-            React.createElement(
-                'td',
-                null,
-                this.props.bug.priority
-            ),
-            React.createElement(
-                'td',
-                null,
-                this.props.bug.status
-            ),
-            React.createElement(
-                'td',
-                null,
-                this.props.bug.owner
-            ),
-            React.createElement(
-                'td',
-                null,
-                this.props.bug.title
-            )
-        );
-    }
-}
+ReactDOM.render(React.createElement(BugList, null), document.getElementById('main'));
 
-class BugFilter extends React.Component {
-    render() {
-        return React.createElement(
-            'div',
-            null,
-            'Filter Section'
-        );
-    }
-}
-
-class BugTable extends React.Component {
-    render() {
-        return React.createElement(
-            'table',
-            null,
-            React.createElement(
-                'thead',
-                null,
-                React.createElement(
-                    'tr',
-                    null,
-                    React.createElement(
-                        'th',
-                        null,
-                        'Id'
-                    ),
-                    React.createElement(
-                        'th',
-                        null,
-                        'Priority'
-                    ),
-                    React.createElement(
-                        'th',
-                        null,
-                        'Status'
-                    ),
-                    React.createElement(
-                        'th',
-                        null,
-                        'Owner'
-                    ),
-                    React.createElement(
-                        'th',
-                        null,
-                        'Title'
-                    )
-                )
-            ),
-            React.createElement(
-                'tbody',
-                null,
-                this.props.bugs.map(bug => {
-                    return React.createElement(BugRow, { bug: bug, key: bug._id });
-                })
-            )
-        );
-    }
-}
+},{"./BugList":188,"react":184,"react-dom":32}],186:[function(require,module,exports){
+var React = require('react');
 
 class BugAdd extends React.Component {
     constructor(props) {
@@ -31591,6 +31503,112 @@ class BugAdd extends React.Component {
     }
 }
 
+module.exports = BugAdd;
+
+},{"react":184}],187:[function(require,module,exports){
+var React = require('react');
+
+class BugFilter extends React.Component {
+    render() {
+        return React.createElement(
+            'div',
+            null,
+            'Filter Section'
+        );
+    }
+}
+
+module.exports = BugFilter;
+
+},{"react":184}],188:[function(require,module,exports){
+var React = require('react');
+var $ = require('jquery');
+var BugFilter = require('./BugFilter');
+var BugAdd = require('./BugAdd');
+
+class BugRow extends React.Component {
+    render() {
+        return React.createElement(
+            'tr',
+            null,
+            React.createElement(
+                'td',
+                null,
+                this.props.bug._id
+            ),
+            React.createElement(
+                'td',
+                null,
+                this.props.bug.priority
+            ),
+            React.createElement(
+                'td',
+                null,
+                this.props.bug.status
+            ),
+            React.createElement(
+                'td',
+                null,
+                this.props.bug.owner
+            ),
+            React.createElement(
+                'td',
+                null,
+                this.props.bug.title
+            )
+        );
+    }
+}
+
+class BugTable extends React.Component {
+    render() {
+        return React.createElement(
+            'table',
+            null,
+            React.createElement(
+                'thead',
+                null,
+                React.createElement(
+                    'tr',
+                    null,
+                    React.createElement(
+                        'th',
+                        null,
+                        'Id'
+                    ),
+                    React.createElement(
+                        'th',
+                        null,
+                        'Priority'
+                    ),
+                    React.createElement(
+                        'th',
+                        null,
+                        'Status'
+                    ),
+                    React.createElement(
+                        'th',
+                        null,
+                        'Owner'
+                    ),
+                    React.createElement(
+                        'th',
+                        null,
+                        'Title'
+                    )
+                )
+            ),
+            React.createElement(
+                'tbody',
+                null,
+                this.props.bugs.map(bug => {
+                    return React.createElement(BugRow, { bug: bug, key: bug._id });
+                })
+            )
+        );
+    }
+}
+
 class BugList extends React.Component {
     constructor(props) {
         super(props);
@@ -31642,8 +31660,8 @@ class BugList extends React.Component {
             React.createElement(BugAdd, { handleSubmit: this.addBug.bind(this) })
         );
     }
-};
+}
 
-ReactDOM.render(React.createElement(BugList, null), document.getElementById('main'));
+module.exports = BugList;
 
-},{"jquery":25,"react":184,"react-dom":32}]},{},[185]);
+},{"./BugAdd":186,"./BugFilter":187,"jquery":25,"react":184}]},{},[185]);
