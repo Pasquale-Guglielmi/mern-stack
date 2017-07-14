@@ -1,12 +1,29 @@
 var React = require('react');
 
+function QueryStringToJSON(queryString) {
+    var pairs = queryString.slice(1).split('&');
+
+    var result = {};
+    pairs.forEach(function(pair) {
+        pair = pair.split('=');
+        result[pair[0]] = decodeURIComponent(pair[1] || '');
+    });
+
+    return JSON.parse(JSON.stringify(result));
+}
+
 class BugFilter extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            priority: '',
-            status: ''
+        var initState = {};
+        var filterJSON = QueryStringToJSON(this.props.initFilter);
+        if (filterJSON.hasOwnProperty('priority')) {
+            initState.priority = filterJSON.priority;
         }
+        if (filterJSON.hasOwnProperty('status')) {
+            initState.status = filterJSON.status;
+        }
+        this.state = initState;
     }
 
     handleChange(event) {
@@ -21,7 +38,14 @@ class BugFilter extends React.Component {
 
     onSubmit(event) {
         event.preventDefault();
-        this.props.handleSubmit(this.state);
+        var newState = {};
+        if (this.state.priority) {
+            newState.priority = this.state.priority;
+        }
+        if (this.state.status) {
+            newState.status = this.state.status;
+        }
+        this.props.handleSubmit(newState);
     }
 
     render() {

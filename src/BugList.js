@@ -2,6 +2,8 @@ var React = require('react');
 var $ = require('jquery');
 var BugFilter = require('./BugFilter');
 var BugAdd = require('./BugAdd');
+var ReactRouter = require('react-router-dom');
+var browserHistory = ReactRouter.browserHistory;
 
 class BugRow extends React.Component {
     render() {
@@ -55,7 +57,10 @@ class BugList extends React.Component {
         this.loadData({});
     }
 
-    handleFilter(obj) {
+    changeFilter(obj) {
+        this.props.history.push({
+            search: '?' + $.param(obj)
+        });
         this.loadData(obj);
     }
 
@@ -93,7 +98,7 @@ class BugList extends React.Component {
         return (
             <div>
                 <h1>Bug Tracker</h1>
-                <BugFilter handleSubmit={this.handleFilter.bind(this)}/>
+                <BugFilter handleSubmit={this.changeFilter.bind(this)} initFilter={this.props.location.search}/>
                 <BugTable bugs={this.state.bugs}/>
                 <BugAdd handleSubmit={this.addBug.bind(this)}/>
             </div>
